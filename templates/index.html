@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furniture</title>
+    <!--    Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}">
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&subset=latin&display=swap"
+          rel="stylesheet" id="sf-google-fonts">
+
+    <style>
+        h1{
+            font-family: 'DM Sans', sans-serif;
+            font-weight: bold;
+            font-size: 2.5rem;
+        }
+
+        li {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: bold;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.2rem;
+        }
+
+
+        .scroll-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #DFC07A; /* Customize the background color */
+            color: white; /* Button text color */
+            border: none;
+            width: 60px; /* Set the width */
+            height: 60px; /* Set the height */
+            border-radius: 8px; /* Rounded corners */
+            font-size: 20px; /* Size of the icon */
+            cursor: pointer;
+            display: none; /* Hide the button by default */
+            z-index: 9999; /* Ensures the button is always on top */
+            text-align: center;
+            line-height: 40px; /* Centers the icon vertically */
+        }
+
+        .scroll-to-top-btn:hover {
+            background-color: brown; /* Darker green when hovered */
+        }
+
+        .scroll-to-top-btn i {
+            font-size: 25px; /* Adjust the icon size */
+        }
+
+
+
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        .gallery-item .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .overlay-text {
+            color: #fff;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+
+
+        .navbar-nav .nav-link {
+            color: black; /* Default color for the links */
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: brown; /* Green color on hover */
+        }
+
+
+
+            /* Button Styles */
+        .btn-primary {
+            background-color: black; /* Green color */
+            border-color: black; /* Green border */
+            color: white; /* Text color */
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: brown; /* Darker green on hover */
+            border-color: brown; /* Darker green border on hover */
+        }
+
+
+
+        .card-body img:hover {
+            transform: scale(1.1);
+        }
+
+
+
+        #team-member-1,
+        #team-member-2,
+        #team-member-3,
+        #team-member-4 {
+        transition: transform 0.3s ease;
+        }
+
+        #team-member-1:hover,
+        #team-member-2:hover,
+        #team-member-3:hover,
+        #team-member-4:hover {
+        transform: scale(1.1);
+        }
+
+
+       .quick-link {
+            color: #333; /* Default color */
+            transition: all 0.3s ease; /* Smooth transition for color and transformation */
+        }
+
+        .quick-link:hover {
+            color: brown; /* Change to the color you prefer on hover */
+            text-decoration: underline; /* Adds an underline on hover */
+            transform: scale(1.1); /* Slightly increases the size */
+        }
+
+
+
+
+        .card:hover {
+            background-color: #DFC07A; /* Change this to your desired hover color */
+            transform: scale(1.05); /* Optional: adds a slight zoom effect */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" width="50" height="50" class="me-2">
+            <span class="fw-bold">Furniture</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#gallery">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#our-team">Team</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#testimonials">Testimonials</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Text Section with Light Green Background -->
+<section id="home"
+         style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; background-color: #DFC07A; padding: 40px; text-align: center; margin-top: 60px;">
+    <!-- Text Content -->
+    <div style="flex: 1 1 300px; padding: 20px; max-width: 600px;">
+        <h1 style="line-height: 1.4; margin-bottom: 20px;">Transform Your Space with Stylish Furniture</h1>
+        <p style="line-height: 1.6; margin-bottom: 40px; max-width: 100%;">
+            Discover a wide range of high-quality furniture crafted to fit your style and budget. From modern to
+            classic, we help make your house a home.
+        </p>
+        <!-- Call to Action Button -->
+        <a href="#contact"
+           style="background-color: black; color: white; padding: 15px 30px; font-size: 16px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; transition: all 0.3s ease;"
+           onmouseover="this.style.backgroundColor='brown'; this.style.color='white';"
+           onmouseout="this.style.backgroundColor='black'; this.style.color='white';">
+            Shop Now
+        </a>
+    </div>
+
+    <!-- Image -->
+    <div style="flex: 1 1 300px; max-width: 600px; padding: 20px;">
+        <img src="{{ url_for('static', filename='img/header.jpg') }}" alt="Furniture Showcase"
+             style="max-width: 100%; height: auto; border-radius: 8px;">
+    </div>
+</section>
+
+
+<!-- Who We Are Section -->
+<section id="about"
+         style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; padding: 5%; background-color: #f5f5f5;">
+    <!-- Text Content -->
+    <div style="flex: 1 1 300px; padding: 20px; text-align: left;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 20px;">About Us</h1>
+        <p style="font-size: 1.2rem; margin-bottom: 20px;">
+            Welcome to our furniture shop, where quality meets elegance. With years of experience in crafting and
+            curating
+            beautiful furniture, we pride ourselves on transforming houses into homes. From modern designs to timeless
+            classics, we offer a diverse range of furniture that caters to every taste and style.
+        </p>
+
+        <h1 style="font-size: 2.5rem; margin-bottom: 20px;">Who We Are</h1>
+        <p style="font-size: 1.2rem; margin-bottom: 30px;">
+            We are a team of passionate artisans and design enthusiasts who believe that furniture is more than just
+            functionality—it’s about creating spaces that inspire and comfort. Whether you're looking for a statement
+            piece
+            or something practical yet stylish, we are here to help you find the perfect fit for your home.
+        </p>
+    </div>
+
+    <!-- Image -->
+    <div style="flex: 1 1 300px; max-width: 600px; padding: 20px;">
+        <img src="{{ url_for('static', filename='img/about.jpg') }}" alt="Furniture Shop Image"
+             style="width: 100%; border-radius: 8px;">
+
+    </div>
+</section>
+
+
+<section style="background-color:#DFC07A;" id="gallery" class="py-5">
+    <div class="container">
+        <h1 class="text-center mb-4">Check Out Our Latest Products</h1>
+        <p class="text-center mb-5">
+            Discover our exquisite collection of furniture, thoughtfully crafted to bring style and comfort to your
+            space. Whether you're seeking timeless elegance, modern designs, or functional pieces, we have something for
+            every home and lifestyle. Explore our featured items and experience the perfect blend of quality and
+            aesthetics!
+        </p>
+
+        <div class="row g-4">
+            <!-- Image 1 -->
+            <div class="col-md-6">
+                <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal"
+                     data-img-src="img/sider.jpg" data-title="Sider"
+                     data-description="PKR 5000">
+                    <img src="{{ url_for('static', filename='img/sider.jpg') }}" alt="Gallery Image 1"
+                         class="img-fluid">
+                    <div class="overlay">
+                        <div class="overlay-text">Sider</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Image 2 -->
+            <div class="col-md-6">
+                <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal"
+                     data-img-src="img/bed.jpg" data-title="Bed"
+                     data-description="PKR 50000">
+                    <img src="{{ url_for('static', filename='img/bed.jpg') }}" alt="Gallery Image 2" class="img-fluid">
+                    <div class="overlay">
+                        <div class="overlay-text">Wooden Bed</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Image 3 -->
+            <div class="col-md-6">
+                <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal"
+                     data-img-src="img/sofa.jpg" data-title="Sofa"
+                     data-description="PKR 160000">
+                    <img src="{{ url_for('static', filename='img/sofa.jpg') }}" alt="Gallery Image 3" class="img-fluid">
+                    <div class="overlay">
+                        <div class="overlay-text">Sofa Set</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Image 4 -->
+            <div class="col-md-6">
+                <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal"
+                     data-img-src="img/chair.jpg" data-title="Chair"
+                     data-description="PKR 10000">
+                    <img src="{{ url_for('static', filename='img/chair.jpg') }}" alt="Gallery Image 4"
+                         class="img-fluid">
+                    <div class="overlay">
+                        <div class="overlay-text">Chair</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Reusable Modal -->
+<div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="galleryModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="" alt="Modal Image" class="img-fluid" id="galleryModalImg">
+                <p class="mt-3" id="galleryModalDescription"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<button id="scrollToTopBtn" class="scroll-to-top-btn">
+    <i class="fas fa-arrow-up"></i> <!-- Font Awesome icon for arrow-up -->
+</button>
+
+
+<!--Meet Our Team-->
+<section id="our-team" class="py-5 bg-light">
+    <div class="container">
+        <h1 class="text-center text-dark mb-5">Meet Our Team</h1>
+
+        <div class="row">
+            <!-- Team Member 1 -->
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <img src="{{ url_for('static', filename='img/avatar.jpg') }}" id="team-member-1"
+                         class="card-img-top rounded-circle" alt="Team Member 1"
+                         style="height: 100px; width: 100px; object-fit: cover; margin: 20px auto 0;">
+
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>Ammar</strong></h5>
+                        <p class="card-text">CEO & Founder</p>
+                        <div class="social-icons">
+                            <a href="#" class="text-dark me-3"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-dark me-3"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="text-dark"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <img src="{{ url_for('static', filename='img/ai.jpg') }}" id="team-member-2"
+                         class="card-img-top rounded-circle" alt="Team Member 2"
+                         style="height: 100px; width: 100px; object-fit: cover; margin: 20px auto 0;">
+
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>Ahmad</strong></h5>
+                        <p class="card-text">Marketing Director</p>
+                        <div class="social-icons">
+                            <a href="https://www.x.com" class="text-dark me-3"><i class="fab fa-twitter"></i></a>
+                            <a href="https://www.facebook.com" class="text-dark me-3"><i
+                                    class="fab fa-facebook"></i></a>
+                            <a href="https://www.instagram.com" class="text-dark"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <img src="{{ url_for('static', filename='img/avatar_.jpeg') }}" id="team-member-3"
+                         class="card-img-top rounded-circle"
+                         alt="Team Member 3"
+                         style="height: 100px; width: 100px; object-fit: cover; margin: 20px auto 0;">
+
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>Micky</strong></h5>
+                        <p class="card-text">Lead Developer</p>
+                        <div class="social-icons">
+                            <a href="#" class="text-dark me-3"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-dark me-3"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="text-dark"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="col-md-3 mb-4">
+                <div class="card text-center">
+                    <img src="{{ url_for('static', filename='img/ai.jpg') }}" id="team-member-4"
+                         class="card-img-top rounded-circle" alt="Team Member 4"
+                         style="height: 100px; width: 100px; object-fit: cover; margin: 20px auto 0;">
+
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>Emma</strong></h5>
+                        <p class="card-text">Operations Manager</p>
+                        <div class="social-icons">
+                            <a href="#" class="text-dark me-3"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-dark me-3"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="text-dark"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="testimonials" class="py-5" style="background-color:#DFC07A;">
+    <div class="container">
+        <h1 class="text-center text-black mb-5">What Our Clients Say</h1>
+
+        <!-- Testimonial Boxes -->
+        <div class="row justify-content-center">
+            <!-- Testimonial 1 -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-center text-dark bg-white d-flex" style="height: 100%; min-height: 400px;">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div class="d-flex flex-column align-items-start mb-4" style="text-align: left;">
+                            <img src="{{ url_for('static', filename='img/ai.jpg') }}" alt="Client Image"
+                                 style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 10px; transition: transform 0.3s ease;">
+
+                            <h5 class="mb-1"><strong>Ammar</strong></h5>
+                            <p class="mb-0">CEO, Furniture Brand</p>
+                        </div>
+                        <p class="fs-5 mb-4" style="text-align: left;">"This is the best service I have ever used! The
+                            team was fantastic and the experience was seamless. Highly recommend!"</p>
+                        <div class="d-flex justify-content-center">
+                            <div class="text-warning">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-center text-dark bg-white d-flex" style="height: 100%; min-height: 400px;">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div class="d-flex flex-column align-items-start mb-4" style="text-align: left;">
+                            <img src="{{ url_for('static', filename='img/ai.jpg') }}" alt="Client Image"
+                                 style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 10px; transition: transform 0.3s ease;">
+
+                            <h5 class="mb-1"><strong>Ahmad</strong></h5>
+                            <p class="mb-0">Marketing Manager, Brand Co.</p>
+                        </div>
+                        <p class="fs-5 mb-4" style="text-align: left;">"Amazing experience! The support team was
+                            incredibly helpful and made sure everything was perfect."</p>
+                        <div class="d-flex justify-content-center">
+                            <div class="text-warning">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-center text-dark bg-white d-flex" style="height: 100%; min-height: 400px;">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div class="d-flex flex-column align-items-start mb-4" style="text-align: left;">
+                            <img src="{{ url_for('static', filename='img/ai.jpg') }}" alt="Client Image"
+                                 style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 10px; transition: transform 0.3s ease;">
+
+                            <h5 class="mb-1"><strong>Tim</strong></h5>
+                            <p class="mb-0">Designer, Creative Agency</p>
+                        </div>
+                        <p class="fs-5 mb-4" style="text-align: left;">"The service exceeded my expectations. The team
+                            is professional and the results speak for themselves."</p>
+                        <div class="d-flex justify-content-center">
+                            <div class="text-warning">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Repeat similar structure for other testimonials... -->
+
+        </div>
+    </div>
+</section>
+
+<section>
+    <div style="height: 350px; background-color: white; background-image: url('{{ url_for('static', filename='img/about.jpg') }}'); background-attachment: fixed; background-size: cover; background-position: center center;">
+    </div>
+</section>
+
+
+<!--<section id="features"-->
+<!--         style="height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; color: black; text-align: center; padding: 50px 20px;">-->
+<!--    <h1 style="margin-bottom: 20px;">Our Key Features</h1>-->
+<!--    <p style="font-size: 1.2rem; max-width: 800px; margin-bottom: 40px;">-->
+<!--        Discover the powerful features that make our product stand out and help you achieve your goals efficiently.-->
+<!--        We’re committed to delivering solutions that add value and drive success.-->
+<!--    </p>-->
+
+<!--    <div style="display: flex; justify-content: center; width: 100%; max-width: 1100px; flex-wrap: wrap; margin-bottom: 50px; gap: 30px;">-->
+<!--        <div style="flex: 1 1 250px; padding: 25px; background: rgba(255, 255, 255, 0.2); border-radius: 8px;">-->
+<!--            <h3 style="font-size: 1.5rem; margin-bottom: 15px;">Feature One</h3>-->
+<!--            <p style="font-size: 1rem;">Our first feature allows you to quickly and easily manage your projects with-->
+<!--                intuitive tools and streamlined processes.</p>-->
+<!--        </div>-->
+
+<!--        <div style="flex: 1 1 250px; padding: 25px; background: rgba(255, 255, 255, 0.2); border-radius: 8px;">-->
+<!--            <h3 style="font-size: 1.5rem; margin-bottom: 15px;">Feature Two</h3>-->
+<!--            <p style="font-size: 1rem;">Enjoy seamless integration with your existing tools, ensuring that your workflow-->
+<!--                remains uninterrupted and efficient.</p>-->
+<!--        </div>-->
+
+<!--        <div style="flex: 1 1 250px; padding: 25px; background: rgba(255, 255, 255, 0.2); border-radius: 8px;">-->
+<!--            <h3 style="font-size: 1.5rem; margin-bottom: 15px;">Feature Three</h3>-->
+<!--            <p style="font-size: 1rem;">Benefit from real-time analytics and reports that help you make data-driven-->
+<!--                decisions to optimize your business performance.</p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+
+<!--<section id="fake-content" class="py-5">-->
+<!--    <div class="container">-->
+<!--        <h1 class="text-center text-dark mb-5">Our Services</h1>-->
+
+<!--        <div class="row">-->
+<!--            &lt;!&ndash; Service 1 &ndash;&gt;-->
+<!--            <div class="col-md-4 mb-4">-->
+<!--                <div class="card shadow-sm d-flex flex-column" style="height: 100%;">-->
+<!--                    <img src="img/slider3.jpg" class="card-img-top" alt="Service 1">-->
+<!--                    <div class="card-body d-flex flex-column">-->
+<!--                        <h5 class="card-title">Creative Design</h5>-->
+<!--                        <p class="card-text">We provide cutting-edge creative design services for websites, branding,-->
+<!--                            and graphics that captivate and engage your audience.</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Service 2 &ndash;&gt;-->
+<!--            <div class="col-md-4 mb-4">-->
+<!--                <div class="card shadow-sm d-flex flex-column" style="height: 100%;">-->
+<!--                    <img src="img/slider2.jpg" class="card-img-top" alt="Service 2">-->
+<!--                    <div class="card-body d-flex flex-column">-->
+<!--                        <h5 class="card-title">Web Development</h5>-->
+<!--                        <p class="card-text">Our web development services focus on creating user-friendly, responsive,-->
+<!--                            and dynamic websites that help businesses grow.</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Service 3 &ndash;&gt;-->
+<!--            <div class="col-md-4 mb-4">-->
+<!--                <div class="card shadow-sm d-flex flex-column" style="height: 100%;">-->
+<!--                    <img src="img/slider1.jpg" class="card-img-top" alt="Service 3">-->
+<!--                    <div class="card-body d-flex flex-column">-->
+<!--                        <h5 class="card-title">Digital Marketing</h5>-->
+<!--                        <p class="card-text">We offer innovative digital marketing strategies to boost your brand's-->
+<!--                            online presence and drive traffic to your business.</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+
+<!--Contact Us-->
+<section style="background-color:#DFC07A;" id="contact" class="py-5">
+    <div class="container">
+        <h1 class="text-center text-dark mb-5">Contact Us</h1>
+
+        <div class="row">
+            <!-- Contact Form (Left Side) -->
+            <div class="col-md-6 mb-4">
+                <h3 class="text-dark">Send Us a Message</h3>
+                <form action="#" method="post">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject" name="subject" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                    </div>
+                    <!-- Center the submit button -->
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Contact Details and Map (Right Side) -->
+            <div class="col-md-6 mb-4">
+                <h3 class="text-dark">Our Contact Information</h3>
+                <p><strong>Address:</strong> 1234 Business Rd, Suite 100, City, Country</p>
+                <p><strong>Email:</strong> info@example.com</p>
+                <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                <p><strong>Working Hours:</strong> Mon - Fri: 9:00 AM - 6:00 PM</p>
+
+                <h4 class="mt-4">Our Location</h4>
+                <!-- Google Map Embed -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3170.825215963005!2d-122.08968768470404!3d37.386051379832195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb7239c02b19f%3A0xc31e3f75ad65edfe!2sApple%20Park!5e0!3m2!1sen!2sus!4v1642474761563!5m2!1sen!2sus"
+                        width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- FAQ Section -->
+<section id="faq" style="background-color: #f8f9fa; padding: 50px 20px;">
+    <div class="container">
+        <h1 class="text-center mb-5">Frequently Asked Questions</h1>
+        <div class="accordion" id="faqAccordion">
+
+            <!-- FAQ 1 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        What types of furniture do you offer?
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                     data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        We offer a wide range of furniture, including living room sets, bedroom furniture, dining
+                        tables,
+                        office chairs, and outdoor furniture. Our collection caters to various styles, from modern to
+                        classic designs.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Do you provide custom furniture designs?
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                     data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, we offer custom furniture design services. Share your vision with us, and our team will
+                        work
+                        to create the perfect piece tailored to your specifications.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        What is your delivery time?
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                     data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Delivery times vary depending on the item and location. In-stock furniture is typically
+                        delivered
+                        within 5-7 business days, while custom pieces may take 4-6 weeks. We’ll keep you updated
+                        throughout
+                        the process.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        Do you offer assembly services?
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                     data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, we provide professional assembly services for most of our furniture. Our team ensures a
+                        hassle-free
+                        setup in your home or office. Please contact us for more details.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        What is your return policy?
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                     data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        We offer a 14-day return policy on most items. The furniture must be in its original condition
+                        and packaging.
+                        Custom-made items are non-returnable. For more details, please review our return policy on the
+                        website.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Footer Section -->
+<footer style="background-color:#DFC07A;" class="text-dark py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Footer Column 1: About Us -->
+            <div class="col-md-4 mb-4 text-start">
+                <h5>About Us</h5>
+                <p>We are a leading company providing exceptional services to help you grow your business online and
+                    offline. Our team is committed to delivering quality results with integrity.</p>
+            </div>
+
+            <!-- Footer Column 2: Quick Links -->
+            <div class="col-md-4 mb-4 text-start">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a style="text-decoration:none;" href="#home" class="quick-link">Home</a></li>
+                    <li><a style="text-decoration:none;" href="#about" class="quick-link">About</a></li>
+                    <li><a style="text-decoration:none;" href="#services" class="quick-link">Services</a></li>
+                    <li><a style="text-decoration:none;" href="#contact" class="quick-link">Contact</a></li>
+                </ul>
+            </div>
+
+
+            <!-- Footer Column 3: Contact Information -->
+            <div class="col-md-4 mb-4 text-start">
+                <h5>Contact Us</h5>
+                <p>Email: contact@yourcompany.com</p>
+                <p>Phone: +123 456 7890</p>
+                <p>Address: 1234 Main St, City, Country</p>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="text-center mt-4">
+            <p>&copy; 2025 Furniture. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"></script>
+
+<script>
+    // Get the button
+    const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            scrollToTopBtn.style.display = "block";
+        } else {
+            scrollToTopBtn.style.display = "none";
+        }
+    };
+
+    // When the user clicks the button, scroll to the top of the document
+    scrollToTopBtn.addEventListener("click", function() {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth" // Smooth scroll to top
+        });
+    });
+</script>
+
+
+<script>
+    // JavaScript to dynamically update modal content
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const modalTitle = document.getElementById('galleryModalLabel');
+    const modalImg = document.getElementById('galleryModalImg');
+    const modalDescription = document.getElementById('galleryModalDescription');
+
+    galleryItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const imgSrc = item.getAttribute('data-img-src');
+            const title = item.getAttribute('data-title');
+            const description = item.getAttribute('data-description');
+
+            modalTitle.textContent = title;
+            modalImg.src = imgSrc;
+            modalDescription.textContent = description;
+        });
+    });
+</script>
+</body>
+</html>
