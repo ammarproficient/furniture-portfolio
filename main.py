@@ -1,5 +1,13 @@
-import numpy as np
+from flask import Flask
+
+app = Flask(__name__)
 
 
-arr = np.array([1, 2, 3, 4, 5])
-print(arr)
+
+@app.route('/new-home')
+def new_home():
+    return "This is the new Home Page!"
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
